@@ -20,7 +20,8 @@ make_site_server() {
 	done
 	ln -s /dev/acq400.2.knobs/${2}_BPSK /etc/acq400/$1/BPSK
 	ln -s /dev/acq400.2.knobs/${2}_OSK /etc/acq400/$1/OSK
-	ln -s /dev/acq400.2.knobs/strobe${2#dds*} /etc/acq400/$1/strobe
+	ln -s /dev/radcelf/$2/strobe /etc/acq400/$1/strobe
+	ln -s /dev/radcelf/$2/strobe_mode /etc/acq400/$1/strobe_mode
 }
 
 
