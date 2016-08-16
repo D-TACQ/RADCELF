@@ -1,8 +1,11 @@
 #!/bin/sh
+
+[ -e /mnt/local/sysconfig/radcelf.sh ] && source /mnt/local/sysconfig/radcelf.sh
+
 (cd /usr/local/lib/modules
 /sbin/insmod ad9512.ko
 /sbin/insmod ad9854.ko
-/sbin/insmod radcelf.ko)
+/sbin/insmod radcelf.ko $RADCELF_PRAMS )
 
 mkdir /dev/radcelf
 ln -s /sys/bus/spi/devices/spi1.0 /dev/radcelf/ddsA
