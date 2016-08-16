@@ -1,0 +1,18 @@
+SCPC	[0 1] Serial Port Control Configuration
+DBP4	[34 1] Delay Bypass 4
+DFS4	[35 1] Delay Full Scale 4
+DFA4	[36 1] Delay Fine Adjust 4
+LVPECL0	[3D 1] LVPECL Out 0
+LVPECL1	[3E 1] LVPECL Out 1
+LVPECL2	[3F 1] LVPECL Out 2
+LVDS3	[40 1] LVDS CMOS Out 3
+LVDS4	[41 1] LVDS CMOS Out 4
+CSPD	[45 1] Clocks Select Power Down
+DIV0	[4A 2] Divider 0  8000 => Bypass
+DIV1	[4C 2] Divider 1  8000 => Bypass
+DIV2	[4E 2] Divider 2  8000 => Bypass
+DIV3	[50 2] Divider 3  8000 => Bypass
+DIV4	[52 2] Divider 4  8000 => Bypass
+FUNPS	[58 1] FUNCTION Pin and Sync
+UPDATE	[5A 1] Update Registers
+
