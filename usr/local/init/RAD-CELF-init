@@ -1,8 +1,8 @@
 #Setup the Clocks
 
-echo DEBUGS ON
+echo DEBUGS OFF
 echo 9 >/proc/sys/kernel/printk
-echo file spi-cadence.c +p >/dev/ddc
+echo file spi-cadence.c -p >/dev/ddc
 
 #Reset the entire clock chain
 
