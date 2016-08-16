@@ -10,8 +10,8 @@ IPDMR	[8,2] I Path Digital Multiplier Register
 QPDMR	[9,2] Q Path Digital Multiplier Register
 SKRR	[A,1] Shaped On/Off Keying Ramp Rate Register
 QDACR	[B,2] Q DAC Register 2 Bytes
-BPSK    0 Enable BPSK
-OSK	0 Enable OSK
+BPSK	0 FPGA Enable BPSK
+OSK	0 FPGA Enable OSK
 strobe	0 manually strobes update if required
-strobe_mode 0   0:manual 1:self 2:group (hit strobe to assert group)
+strobe_mode	0   0:manual 1:self 2:group (hit strobe to assert group)
 
