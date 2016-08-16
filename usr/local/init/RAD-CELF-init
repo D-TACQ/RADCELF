@@ -1,5 +1,9 @@
 #Setup the Clocks
 
+echo DEBUGS ON
+echo 9 >/proc/sys/kernel/printk
+echo file spi-cadence.c +p >/dev/ddc
+
 #Reset the entire clock chain
 
 echo 00 >  /dev/radcelf/clkdA/CSPD
@@ -61,3 +65,8 @@ echo 08 > /dev/radcelf/clkdB/LVPECL1
 echo 01 > /dev/radcelf/clkdA/UPDATE
 echo 01 > /dev/radcelf/clkdB/UPDATE
 
+# tell FPGA to take over the clocking
+
+echo 1 > /dev/acq400.2.knobs/ddsA_upd_clk_fpga
+echo 1 > /dev/acq400.2.knobs/ddsB_upd_clk_fpga
+echo 1 > /dev/acq400.2.knobs/ddsC_upd_clk_fpga
