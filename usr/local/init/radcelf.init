@@ -18,7 +18,12 @@ make_site_server() {
 	do
 		ln -s $file /etc/acq400/$1
 	done
+	ln -s /dev/acq400.2.knobs/${2}_BPSK /etc/acq400/$1/BPSK
+	ln -s /dev/acq400.2.knobs/${2}_OSK /etc/acq400/$1/OSK
+	ln -s /dev/acq400.2.knobs/strobe${2#dds*} /etc/acq400/$1/strobe
 }
+
+
 make_site_server 4 ddsA
 make_site_server 5 ddsB
 make_site_server 6 ddsC
