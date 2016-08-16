@@ -1,0 +1,63 @@
+#Setup the Clocks
+
+#Reset the entire clock chain
+
+echo 00 >  /dev/radcelf/clkdA/CSPD
+echo 01 >  /dev/radcelf/clkdA/UPDATE
+
+
+# Set Primary Clock LVPECL 2 Off, set LVDS 3 to Off, Set LVDS 4 to TTL
+echo 0a > /dev/radcelf/clkdA/LVPECL2
+echo 01 > /dev/radcelf/clkdA/LVDS3
+echo 08 > /dev/radcelf/clkdA/LVDS4
+echo 01 >  /dev/radcelf/clkdA/UPDATE
+
+# Set Secondary Clock LVPECL 2 Off, set LVDS 3 to TTL
+echo 0a > /dev/radcelf/clkdB/LVPECL2
+echo 08 > /dev/radcelf/clkdB/LVDS3
+echo 01 >  /dev/radcelf/clkdB/UPDATE
+
+
+#Set all the AD9512 dividers to bypass
+
+echo 0080 > /dev/radcelf/clkdA/DIV0
+echo 0080 > /dev/radcelf/clkdA/DIV1
+echo 0080 > /dev/radcelf/clkdA/DIV2
+echo 0080 > /dev/radcelf/clkdA/DIV3
+echo 0080 > /dev/radcelf/clkdA/DIV4
+echo 0080 > /dev/radcelf/clkdB/DIV0
+echo 0080 > /dev/radcelf/clkdB/DIV1
+echo 0080 > /dev/radcelf/clkdB/DIV2
+echo 0080 > /dev/radcelf/clkdB/DIV3
+echo 0080 > /dev/radcelf/clkdB/DIV4
+echo 01   >  /dev/radcelf/clkdA/UPDATE
+echo 01   >  /dev/radcelf/clkdB/UPDATE
+
+
+
+#Switch the clocks off on the DDS Devices to stop I/O Updates
+
+#Clock Remapping DDS - Device clkA Output 1
+echo 0a > /dev/radcelf/clkdA/LVPECL1
+echo 01 > /dev/radcelf/clkdA/UPDATE
+
+#The two Main DDS devices on device clkB Outputs 0 and 1
+echo 0a > /dev/radcelf/clkdB/LVPECL0
+echo 0a > /dev/radcelf/clkdB/LVPECL1
+echo 01 > /dev/radcelf/clkdB/UPDATE
+
+#Write to the Control Registers on the 3 DDS devices - External I/O Update and SDO On
+# Set the RefClk Multiplier on at x10
+
+echo 004a0001 > /dev/radcelf/ddsA/CR
+echo 004a0001 > /dev/radcelf/ddsB/CR
+echo 004a0001 > /dev/radcelf/ddsC/CR
+
+
+#Switch the Clocks back on again
+echo 08 > /dev/radcelf/clkdA/LVPECL1
+echo 08 > /dev/radcelf/clkdB/LVPECL0
+echo 08 > /dev/radcelf/clkdB/LVPECL1
+echo 01 > /dev/radcelf/clkdA/UPDATE
+echo 01 > /dev/radcelf/clkdB/UPDATE
+

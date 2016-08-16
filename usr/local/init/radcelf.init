@@ -1,0 +1,42 @@
+#!/bin/sh
+(cd /usr/local/lib/modules
+/sbin/insmod ad9512.ko
+/sbin/insmod ad9854.ko
+/sbin/insmod radcelf.ko)
+
+mkdir /dev/radcelf
+ln -s /sys/bus/spi/devices/spi1.0 /dev/radcelf/ddsA
+ln -s /sys/bus/spi/devices/spi1.1 /dev/radcelf/ddsB
+ln -s /sys/bus/spi/devices/spi1.2 /dev/radcelf/ddsC
+
+ln -s /sys/bus/spi/devices/spi1.3 /dev/radcelf/clkdA
+ln -s /sys/bus/spi/devices/spi1.4 /dev/radcelf/clkdB
+
+make_site_server() {
+	mkdir /etc/acq400/$1
+	for file in /dev/radcelf/$2/[A-Z]* 
+	do
+		ln -s $file /etc/acq400/$1
+	done
+}
+make_site_server 4 ddsA
+make_site_server 5 ddsB
+make_site_server 6 ddsC
+make_site_server 7 clkdA
+make_site_server 8 clkdB
+
+if [ -e /mnt/local/RAD-CELF-init ]; then
+	echo run override /mnt/local/RAD-CELF-init
+	/mnt/local/RAD-CELF-init
+else
+	/usr/local/init/RAD-CELF-init
+fi
+
+echo now hit the FPGA knobs
+
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+ENA=${1:-1}
+if [ $ENA ]; then
+	DDCEN=+p
+else
+	DDCEN=-p
+fi
+echo file ad9854.c $DDCEN >/dev/ddc
+echo file ad9512.c $DDCEN >/dev/ddc
+set.sys /sys/module/ad9854/parameters/dummy_device $ENA
+set.sys /sys/module/ad9512/parameters/dummy_device $ENA
+

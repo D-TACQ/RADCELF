@@ -1,8 +1,8 @@
 #!/bin/bash
-# SOS : simple one shot
+# RADCELF : CELF with 3 x DDS, 2 x CLKD
 DC=$(date +%y%m%d%H%M)
 SEQ=35
-PKG=bolodsp
+PKG=radcelf
 PACKAGES=../../PACKAGES.OPT
 
 rm -Rf opkg/*

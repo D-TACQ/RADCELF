@@ -1,0 +1,8 @@
+#!/bin/sh
+DEV=${1:-/dev/radcelf/ddsA}
+cd $DEV
+(for file in [A-Z]*
+do
+	echo $(cat _$file) $file
+done ) | sort -n
+
