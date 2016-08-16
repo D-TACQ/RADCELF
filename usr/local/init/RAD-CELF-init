@@ -70,3 +70,7 @@ echo 01 > /dev/radcelf/clkdB/UPDATE
 echo 1 > /dev/acq400.2.knobs/ddsA_upd_clk_fpga
 echo 1 > /dev/acq400.2.knobs/ddsB_upd_clk_fpga
 echo 1 > /dev/acq400.2.knobs/ddsC_upd_clk_fpga
+
+echo 1 > /dev/radcelf/ddsA/strobe_mode
+echo 1 > /dev/radcelf/ddsB/strobe_mode
+echo 1 > /dev/radcelf/ddsC/strobe_mode
