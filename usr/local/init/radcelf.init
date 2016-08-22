@@ -2,10 +2,20 @@
 
 [ -e /mnt/local/sysconfig/radcelf.sh ] && source /mnt/local/sysconfig/radcelf.sh
 
-(cd /usr/local/lib/modules
-/sbin/insmod ad9512.ko
-/sbin/insmod ad9854.ko
-/sbin/insmod radcelf.ko $RADCELF_PRAMS )
+
+do_insmod() {
+	if [ -e /mnt/local/$1 ]; then
+		KO=/mnt/local/$1
+		echo loading OVERRIDE module /mnt/local/$1
+	else
+		KO=/usr/local/lib/modules/$1
+	fi
+	shift
+	/sbin/insmod $KO $*	
+}
+do_insmod ad9512.ko
+do_insmod ad9854.ko
+do_insmod radcelf.ko $RADCELF_PRAMS
 
 mkdir /dev/radcelf
 ln -s /sys/bus/spi/devices/spi1.0 /dev/radcelf/ddsA
@@ -21,18 +31,33 @@ make_site_server() {
 	do
 		ln -s $file /etc/acq400/$1
 	done
+}
+
+make_site_server_dds() {
+	make_site_server $1 $2
+
 	ln -s /dev/acq400.2.knobs/${2}_BPSK /etc/acq400/$1/BPSK
 	ln -s /dev/acq400.2.knobs/${2}_OSK /etc/acq400/$1/OSK
 	ln -s /dev/radcelf/$2/strobe /etc/acq400/$1/strobe
 	ln -s /dev/radcelf/$2/strobe_mode /etc/acq400/$1/strobe_mode
+	ln -s /proc/driver/ad9854/$2/* /etc/acq400/$1/
 }
 
-
-make_site_server 4 ddsA
-make_site_server 5 ddsB
-make_site_server 6 ddsC
+make_site_server_dds 4 ddsA
+make_site_server_dds 5 ddsB
+make_site_server_dds 6 ddsC
 make_site_server 7 clkdA
 make_site_server 8 clkdB
+
+cat - >/etc/inetd.radcelf.conf <<EOF
+4244 stream tcp nowait root set.Baadd set.Baadd 4
+4245 stream tcp nowait root set.Baadd set.Baadd 5
+4346 stream tcp nowait root set.Baadd set.Baadd 6
+EOF
+
+inetd /etc/inetd.radcelf.conf
+
+monitor_dds &
 
 if [ -e /mnt/local/RAD-CELF-init ]; then
 	echo run override /mnt/local/RAD-CELF-init

@@ -1,0 +1,92 @@
+#!/usr/local/bin/python
+
+import time
+import os, sys
+import subprocess
+import decimal
+
+def cCrR(f, cols, rows):
+	f.write('<pageFormat><noCols>%d</noCols><colItems>%d</colItems></pageFormat>\n' % (cols, rows))
+
+def host():
+	return subprocess.check_output(["hostname"]).rstrip()
+
+def date():
+        return subprocess.check_output(["date"]).rstrip()
+
+def make_header(f):
+	f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+	f.write('<acqDataXML>\n')
+        f.write('<acqInfo>\n')
+	f.write('   <host>%s</host>\n' % host())
+        f.write('   <date>%s</date>\n' % date())
+        f.write('</acqInfo>\n')
+        cCrR(f, 2, 14)
+
+def get_data(cols):
+        lines = []
+        for file in cols:
+            f = open(file, 'r')
+            raw = f.read();
+            f.close()
+            lines.append(raw.strip().split('\n'))
+
+        pasted = []
+        jj = 0
+        for line in lines[0]:
+            paste_line = ' '.join(line.strip().split(' ')).split(' ')
+       
+            for ii in range(1, len(lines)):
+                paste_line.append(lines[ii][jj])
+
+            pasted.append(paste_line)
+            jj += 1
+       
+        return pasted
+           
+def supp(key, value):
+        if 'FTW' in key:
+            return "%15d %s" % (int(value, 16), value)
+        else:
+            return value 
+
+freq_context = decimal.Context(prec=4)
+
+def freq(site):
+        try:
+            hz = subprocess.check_output(["get.site", "0",  "SIG:CLK_S%d:FREQ" % site]).strip().split(' ')[1]
+            return freq_context.create_decimal(hz).to_eng_string()
+        except IndexError:
+            return 'err'
+
+def make_body(f):
+        lines = [['REG', '*', 'ddsA', 'ddsB', 'ddsC' ]]
+        lines.extend([['FREQ', '*', freq(3), freq(4), freq(5)]])
+	lines.extend(get_data(['/proc/driver/ad9854/ddsA/biencuite', 
+                          '/proc/driver/ad9854/ddsB/rare', 
+                          '/proc/driver/ad9854/ddsC/rare']))
+
+        id=1
+        for line in lines:
+            f.write('<acqData id="%d" n="%s %s">\n' % (id, line[1], line[0]))
+            f.write('   <v><![CDATA[%30s %30s %30s]]></v>\n' % (supp(line[0], line[2]), supp(line[0], line[3]), supp(line[0],line[4])))
+            f.write('</acqData>\n')
+            id += 1
+
+def make_tail(f):
+	f.write('</acqDataXML>\n')
+
+
+def update_xml():
+	f = open('/dev/shm/DDS.xmlt', 'w')
+	make_header(f)
+	make_body(f)
+	make_tail(f)
+	f.close()
+	os.rename('/dev/shm/DDS.xmlt', '/dev/shm/DDS.xml')
+
+
+while True:
+	update_xml()
+	time.sleep(1)
+done

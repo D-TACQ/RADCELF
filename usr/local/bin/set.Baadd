@@ -1,0 +1,7 @@
+#!/bin/sh
+site=${1:-4}
+while read Baadd
+do
+	set.site $site Baadd=$Baadd
+done
+
