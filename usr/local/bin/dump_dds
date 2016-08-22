@@ -60,7 +60,7 @@ def freq(site):
             return 'err'
 
 def make_body(f):
-        lines = [['REG', '*', 'ddsA', 'ddsB', 'ddsC' ]]
+        lines = [['DDS', '*', 'ddsA', 'ddsB', 'ddsC' ]]
         lines.extend([['FREQ', '*', freq(3), freq(4), freq(5)]])
 	lines.extend(get_data(['/proc/driver/ad9854/ddsA/biencuite', 
                           '/proc/driver/ad9854/ddsB/rare', 
