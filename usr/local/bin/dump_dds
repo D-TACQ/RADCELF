@@ -46,7 +46,8 @@ def get_data(cols):
            
 def supp(key, value):
         if 'FTW' in key:
-            return "%15d %s" % (int(value, 16), value)
+            return "%f %s" % (float(int(value, 16))/2**48, value)
+#            return "%15d %s" % (int(value, 16), value)
         else:
             return value 
 
