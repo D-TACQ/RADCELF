@@ -52,7 +52,7 @@ make_site_server 8 clkdB
 cat - >/etc/inetd.radcelf.conf <<EOF
 4244 stream tcp nowait root set.Baadd set.Baadd 4
 4245 stream tcp nowait root set.Baadd set.Baadd 5
-4346 stream tcp nowait root set.Baadd set.Baadd 6
+4246 stream tcp nowait root set.Baadd set.Baadd 6
 EOF
 
 inetd /etc/inetd.radcelf.conf
