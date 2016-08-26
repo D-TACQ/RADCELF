@@ -1,0 +1,9 @@
+#!/bin/sh
+# initialize 3 x DDS to 
+# 0.0625, 0.0703, 0.078 (*300M)
+
+set.site 4 FTW1=100000000000
+set.site 5 FTW1=120000000000
+set.site 6 FTW1=140000000000
+
+
