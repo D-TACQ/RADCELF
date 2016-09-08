@@ -37,7 +37,9 @@ echo 0080 > /dev/radcelf/clkdB/DIV4
 echo 01   >  /dev/radcelf/clkdA/UPDATE
 echo 01   >  /dev/radcelf/clkdB/UPDATE
 
-
+# Reset the DDS
+set.site 2 ddsX_hard_reset=1
+set.site 2 ddsX_hard_reset=0
 
 #Switch the clocks off on the DDS Devices to stop I/O Updates
 
@@ -51,11 +53,11 @@ echo 0a > /dev/radcelf/clkdB/LVPECL1
 echo 01 > /dev/radcelf/clkdB/UPDATE
 
 #Write to the Control Registers on the 3 DDS devices - External I/O Update and SDO On
-# Set the RefClk Multiplier on at x10
+# Set the RefClk Multiplier on at x15, switch off the Inverse Sinc Filter
 
-echo 004a0001 > /dev/radcelf/ddsA/CR
-echo 004a0001 > /dev/radcelf/ddsB/CR
-echo 004a0001 > /dev/radcelf/ddsC/CR
+echo 004f0041 > /dev/radcelf/ddsA/CR
+echo 004f0041 > /dev/radcelf/ddsB/CR
+echo 004f0041 > /dev/radcelf/ddsC/CR
 
 
 #Switch the Clocks back on again
@@ -75,4 +77,3 @@ echo 1 > /dev/radcelf/ddsA/strobe_mode
 echo 1 > /dev/radcelf/ddsB/strobe_mode
 echo 1 > /dev/radcelf/ddsC/strobe_mode
 
-/usr/local/CARE/dds_inverse_sync_off

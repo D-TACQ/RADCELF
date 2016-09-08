@@ -2,7 +2,7 @@
 
 for D in A B C
 do
-	set.sys /dev/radcelf/dds$D/CR 000f0041
+	set.sys /dev/radcelf/dds$D/CR 004f0041
 done
 
 
