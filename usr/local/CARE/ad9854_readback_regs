@@ -1,0 +1,23 @@
+#!/bin/sh
+site=4
+fmt=biencuite
+
+case $1 in
+4,5,6)	site=$1;;
+A)	site=4;;
+B)	site=5;;
+C)	site=6;;
+esac
+
+case $2 in
+1) fmt=bleu;;
+2) fmt=rare;;
+3) fmt=biencuite;;
+esac
+
+set.sys /sys/module/ad9854/parameters/read_cache 0
+cat /etc/acq400/$site/$fmt
+set.sys /sys/module/ad9854/parameters/read_cache 1
+
+
+
