@@ -28,7 +28,7 @@ ln -s /sys/bus/spi/devices/spi1.4 /dev/radcelf/clkdB
 
 make_aux_knobs() {
 	let ai=1
-	hwm=/sys/class/hwmon/
+	hwm=/sys/class/hwmon
 	# hwmon4 has inputs 1..4
 	for inp in $hwm/hwmon3/device/in?_input $hwm/hwmon2/device/in?_input
 	do
