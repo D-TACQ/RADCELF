@@ -17,6 +17,7 @@ do_insmod ad9512.ko
 do_insmod ad9854.ko
 do_insmod radcelf.ko $RADCELF_PRAMS
 
+
 mkdir /dev/radcelf
 ln -s /sys/bus/spi/devices/spi1.0 /dev/radcelf/ddsA
 ln -s /sys/bus/spi/devices/spi1.1 /dev/radcelf/ddsB
@@ -30,6 +31,19 @@ make_site_server() {
 	for file in /dev/radcelf/$2/[A-Z]* 
 	do
 		ln -s $file /etc/acq400/$1
+	done
+
+	for file in /dev/gpio/CELF/d?
+	do
+		ln -s $file /etc/acq400/$1
+	done
+	let ai=1
+	hwm=/sys/class/hwmon/
+	# hwmon4 has inputs 1..4
+	for inp in $hwm/hwmon3/device/in?_input $hwm/hwmon2/device/in?_input
+	do
+		ln -s $inp /etc/acq400/$1/ai$ai
+		let ai=$ai+1
 	done
 }
 
