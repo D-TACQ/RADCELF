@@ -22,19 +22,19 @@ echo 08 > /dev/radcelf/clkdB/LVDS3
 echo 01 >  /dev/radcelf/clkdB/UPDATE
 
 
-#Set all the AD9512 dividers to bypass
+#Set all the AD9512 dividers to divide by 5 to avoid overheat
 
-echo 0080 > /dev/radcelf/clkdA/DIV0
-echo 0080 > /dev/radcelf/clkdA/DIV1
-echo 0080 > /dev/radcelf/clkdA/DIV2
-echo 0080 > /dev/radcelf/clkdA/DIV3
-echo 0080 > /dev/radcelf/clkdA/DIV4
-echo 0080 > /dev/radcelf/clkdB/DIV0
-echo 0080 > /dev/radcelf/clkdB/DIV1
-echo 0080 > /dev/radcelf/clkdB/DIV2
-echo 0080 > /dev/radcelf/clkdB/DIV3
-echo 0080 > /dev/radcelf/clkdB/DIV4
+echo 1200 > /dev/radcelf/clkdA/DIV0
+echo 1200 > /dev/radcelf/clkdA/DIV1
+echo 1200 > /dev/radcelf/clkdA/DIV2
+echo 1200 > /dev/radcelf/clkdA/DIV3
+echo 1200 > /dev/radcelf/clkdA/DIV4
 echo 01   >  /dev/radcelf/clkdA/UPDATE
+echo 1200 > /dev/radcelf/clkdB/DIV0
+echo 1200 > /dev/radcelf/clkdB/DIV1
+echo 1200 > /dev/radcelf/clkdB/DIV2
+echo 1200 > /dev/radcelf/clkdB/DIV3
+echo 1200 > /dev/radcelf/clkdB/DIV4
 echo 01   >  /dev/radcelf/clkdB/UPDATE
 
 # Reset the DDS
