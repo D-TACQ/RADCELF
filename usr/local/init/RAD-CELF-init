@@ -30,11 +30,11 @@ echo 1200 > /dev/radcelf/clkdA/DIV2
 echo 1200 > /dev/radcelf/clkdA/DIV3
 echo 1200 > /dev/radcelf/clkdA/DIV4
 echo 01   >  /dev/radcelf/clkdA/UPDATE
-echo 1200 > /dev/radcelf/clkdB/DIV0
-echo 1200 > /dev/radcelf/clkdB/DIV1
-echo 1200 > /dev/radcelf/clkdB/DIV2
-echo 1200 > /dev/radcelf/clkdB/DIV3
-echo 1200 > /dev/radcelf/clkdB/DIV4
+echo 0080 > /dev/radcelf/clkdB/DIV0
+echo 0080 > /dev/radcelf/clkdB/DIV1
+echo 0080 > /dev/radcelf/clkdB/DIV2
+echo 0080 > /dev/radcelf/clkdB/DIV3
+echo 0080 > /dev/radcelf/clkdB/DIV4
 echo 01   >  /dev/radcelf/clkdB/UPDATE
 
 # Reset the DDS
