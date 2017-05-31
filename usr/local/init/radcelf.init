@@ -37,6 +37,7 @@ make_aux_knobs() {
 	done
 	# temp is already there from hwmon3 standard CELF
 	ln -s $hwm/hwmon4/device/temp1_input /etc/acq400/$1/temp2
+	rm /etc/acq400/$1/in?
 }
 make_site_server() {
 	mkdir /etc/acq400/$1
