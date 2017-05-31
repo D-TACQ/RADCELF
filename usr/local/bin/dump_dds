@@ -21,7 +21,7 @@ def make_header(f):
 	f.write('   <host>%s</host>\n' % host())
         f.write('   <date>%s</date>\n' % date())
         f.write('</acqInfo>\n')
-        cCrR(f, 2, 14)
+        cCrR(f, 3, 15)
 
 def get_data(cols):
         lines = []
@@ -62,6 +62,7 @@ def freq(site):
 
 def make_body(f):
         lines = [['DDS', '*', '--- DDS A ---', '--- DDS B ---', '--- DDS C ---' ]]
+        lines.extend([['FIN', '*', freq(2), '--', '--']])
         lines.extend([['FREQ', '*', freq(3), freq(4), freq(5)]])
 	lines.extend(get_data(['/proc/driver/ad9854/ddsA/biencuite', 
                           '/proc/driver/ad9854/ddsB/rare', 
