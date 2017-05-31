@@ -1,0 +1,88 @@
+#!/bin/sh
+
+echo loopback J1 to J2
+
+echo make all dX outputs, active high
+
+for al in /dev/gpio/CELF/.active_low.d?
+do
+	echo 0 > $al
+done
+
+for dr in /dev/gpio/CELF/.direction.d?
+do
+	echo out > $dr
+done
+
+export S3=/etc/acq400/3/
+
+set_DO() {
+	let dx=0
+	for yy in $*
+	do
+		echo $yy > $S3/d$dx
+		let dx=$dx+1
+	done
+	while [ $dx -lt 8 ]; do
+		echo 0 > $S3/d$dx
+		let dx=$dx+1
+	done
+}
+
+get_AI() {
+	echo $(cat $S3/ai?)
+}
+
+_normalize_AI() {
+	for an in $(get_AI)
+	do
+		if [ $an -eq 0 ];then
+			echo 0
+		else
+			echo 1
+		fi
+	done
+}
+normalize_AI() {
+	echo $(_normalize_AI)
+}
+
+PASS_COUNT=0
+FAIL_COUNT=0
+
+loopback_test() {
+	OP="$*"
+	set_DO $*
+	sleep 2
+	IP="$(normalize_AI)"
+	IPV="$(get_AI)"
+	if [ "$OP" = "$IP" ]; then
+		st=PASS
+		let PASS_COUNT=$PASS_COUNT+1
+	else
+		st=FAIL
+		let FAIL_COUNT=$FAIL_COUNT+1
+	fi
+	echo "OUT:$OP BACK:$IP $st $IPV"
+}
+
+loopback_test 0 0 0 0 0 0 0 0
+loopback_test 1 0 0 0 0 0 0 0
+loopback_test 0 1 0 0 0 0 0 0
+loopback_test 0 0 1 0 0 0 0 0
+loopback_test 0 0 0 1 0 0 0 0
+loopback_test 0 0 0 0 1 0 0 0
+loopback_test 0 0 0 0 0 1 0 0
+loopback_test 0 0 0 0 0 0 1 0
+loopback_test 0 0 0 0 0 0 0 0
+
+let tcount=$PASS_COUNT+$FAIL_COUNT
+if [ $FAIL_COUNT -ne 0 ]; then
+	st=FAIL
+else
+	st=PASS
+fi
+echo PASS: $PASS_COUNT/$tcount $st
+[ $FAIL_COUNT -ne 0 ] && exit 1
+exit 0
+
