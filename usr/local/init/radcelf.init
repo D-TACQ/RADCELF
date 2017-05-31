@@ -30,11 +30,12 @@ make_aux_knobs() {
 	let ai=1
 	hwm=/sys/class/hwmon
 	# hwmon4 has inputs 1..4
-	for inp in $hwm/hwmon3/device/in?_input $hwm/hwmon2/device/in?_input
+	for inp in $hwm/hwmon4/device/in?_input $hwm/hwmon3/device/in?_input
 	do
 		ln -s $inp /etc/acq400/$1/ai$ai
 		let ai=$ai+1
 	done
+	ln -s $hwm/hwmon3/device/temp1_input /etc/acq400/$1/temp2
 }
 make_site_server() {
 	mkdir /etc/acq400/$1
