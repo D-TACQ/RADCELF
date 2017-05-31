@@ -21,7 +21,7 @@ def make_header(f):
 	f.write('   <host>%s</host>\n' % host())
         f.write('   <date>%s</date>\n' % date())
         f.write('</acqInfo>\n')
-        cCrR(f, 3, 15)
+        cCrR(f, 3, 16)
 
 def get_data(cols):
         lines = []
@@ -43,11 +43,17 @@ def get_data(cols):
             jj += 1
        
         return pasted
-           
+          
+def getmult(value):
+    cr = int(value, 16)
+    return (cr >> 16) & 0x1f
+ 
 def supp(key, value):
         if 'FTW' in key:
             return "%f %s" % (float(int(value, 16))/2**48, value)
-#            return "%15d %s" % (int(value, 16), value)
+#            return "%15d %s" % (int(value, 16), value
+        if key == 'CR':
+            return "X%-2d %12s" % (getmult(value), value)
         else:
             return value 
 
@@ -61,12 +67,24 @@ def freq(site):
             return 'err'
 
 def make_body(f):
-        lines = [['DDS', '*', '--- DDS A ---', '--- DDS B ---', '--- DDS C ---' ]]
-        lines.extend([['FIN', '*', freq(2), '--', '--']])
-        lines.extend([['FREQ', '*', freq(3), freq(4), freq(5)]])
-	lines.extend(get_data(['/proc/driver/ad9854/ddsA/biencuite', 
+        dds_data = get_data(['/proc/driver/ad9854/ddsA/biencuite', 
                           '/proc/driver/ad9854/ddsB/rare', 
-                          '/proc/driver/ad9854/ddsC/rare']))
+                          '/proc/driver/ad9854/ddsC/rare'])
+        for line in dds_data:
+            if line[0] == 'CR':
+                break
+        cx = [getmult(x) for x in line[2:5]]
+
+        fin = freq(2)
+        fint = [freq_context.create_decimal(cx[x]*float(fin)).to_eng_string() for x in range(0,3)]
+            
+#        cr = [getmult(line[2]), getmult(line[3]), getmult(line[4])]
+        
+        lines = [['DDS', '*', '--- DDS A ---', '--- DDS B ---', '--- DDS C ---' ]]
+        lines.extend([['FIN', '+', fin, '--', '--']])
+        lines.extend([['INTCLK', '*', fint[0], fint[1], fint[2]]])
+        lines.extend([['FREQ', '/', freq(3), freq(4), freq(5)]])
+	lines.extend(dds_data)
 
         id=1
         for line in lines:
