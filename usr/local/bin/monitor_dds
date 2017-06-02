@@ -33,7 +33,7 @@ monitor() {
 	sleep 5
 	while [ 1 ]
 	do
-		nice dump_dds 2>&1 > /dev/null 
+		nice dump_dds >/dev/null 2>&1
 	done
 }
 
