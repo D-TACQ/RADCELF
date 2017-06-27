@@ -1,5 +1,5 @@
 #!/bin/sh
 bn=$(basename $0)
 dev=${bn#*.}
-echo $0 ${0#*.}
+#echo $0 ${0#*.}
 echo $2 > /dev/radcelf/$dev/$1
