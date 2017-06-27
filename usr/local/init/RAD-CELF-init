@@ -6,36 +6,39 @@ echo file spi-cadence.c -p >/dev/ddc
 
 #Reset the entire clock chain
 
-echo 00 >  /dev/radcelf/clkdA/CSPD
-echo 01 >  /dev/radcelf/clkdA/UPDATE
+set.clkdA CSPD 		00
+set.clkdA UPDATE 	01
 
 
 # Set Primary Clock LVPECL 2 Off, set LVDS 3 to Off, Set LVDS 4 to TTL
-echo 0a > /dev/radcelf/clkdA/LVPECL2
-echo 01 > /dev/radcelf/clkdA/LVDS3
-echo 08 > /dev/radcelf/clkdA/LVDS4
-echo 01 >  /dev/radcelf/clkdA/UPDATE
+set.clkdA LVPECL2 	0a
+set.clkdA LVDS3 	01
+set.clkdA LVDS4 	08
+set.clkdA UPDATE	01
 
-# Set Secondary Clock LVPECL 2 Off, set LVDS 3 to TTL
-echo 0a > /dev/radcelf/clkdB/LVPECL2
-echo 08 > /dev/radcelf/clkdB/LVDS3
-echo 01 >  /dev/radcelf/clkdB/UPDATE
+# Set Secondary Clock LV$PECL 2 Off, set LVDS 3 to TTL
+set.clkdB LVPECL2	0a
+set.clkdB LVDS3		08
+set.clkdB UPDATE	01
 
 
 #Set all the AD9512 dividers to divide by 5 to avoid overheat
 
-echo 1200 > /dev/radcelf/clkdA/DIV0
-echo 1200 > /dev/radcelf/clkdA/DIV1
-echo 1200 > /dev/radcelf/clkdA/DIV2
-echo 1200 > /dev/radcelf/clkdA/DIV3
-echo 1200 > /dev/radcelf/clkdA/DIV4
-echo 01   >  /dev/radcelf/clkdA/UPDATE
-echo 0080 > /dev/radcelf/clkdB/DIV0
-echo 0080 > /dev/radcelf/clkdB/DIV1
-echo 0080 > /dev/radcelf/clkdB/DIV2
-echo 0080 > /dev/radcelf/clkdB/DIV3
-echo 0080 > /dev/radcelf/clkdB/DIV4
-echo 01   >  /dev/radcelf/clkdB/UPDATE
+set.clkdA	DIV0	1200
+set.clkdA	DIV1	1200
+set.clkdA	DIV2	1200
+set.clkdA	DIV3	1200
+set.clkdA	DIV4	1200
+set.clkdA	UPDATE	1
+
+set.clkdB	DIV0	0080
+set.clkdB	DIV1	0080
+set.clkdB	DIV2	0080
+set.clkdB	DIV3	0080
+set.clkdB	DIV4	0080
+set.clkdB	UPDATE	1
+
+
 
 # Reset the DDS
 set.site 2 ddsX_hard_reset=1
@@ -44,36 +47,38 @@ set.site 2 ddsX_hard_reset=0
 #Switch the clocks off on the DDS Devices to stop I/O Updates
 
 #Clock Remapping DDS - Device clkA Output 1
-echo 0a > /dev/radcelf/clkdA/LVPECL1
-echo 01 > /dev/radcelf/clkdA/UPDATE
+set.clkdA	LVPECL1	0a
+set.clkdA	UPDATE	01
 
 #The two Main DDS devices on device clkB Outputs 0 and 1
-echo 0a > /dev/radcelf/clkdB/LVPECL0
-echo 0a > /dev/radcelf/clkdB/LVPECL1
-echo 01 > /dev/radcelf/clkdB/UPDATE
+set.clkdB	LVPECL0	0a
+set.clkdB	LVPECL1	0a
+set.clkdB	UPDATE	1
 
 #Write to the Control Registers on the 3 DDS devices - External I/O Update and SDO On
 # Set the RefClk Multiplier on at x4 switch off the Inverse Sinc Filter
 
-echo 00040041 > /dev/radcelf/ddsA/CR
-echo 00040041 > /dev/radcelf/ddsB/CR
-echo 00040041 > /dev/radcelf/ddsC/CR
+set.ddsA	CR	00040041
+set.ddsB	CR	00040041
+set.ddsC	CR	00040041
 
 
 #Switch the Clocks back on again
-echo 08 > /dev/radcelf/clkdA/LVPECL1
-echo 08 > /dev/radcelf/clkdB/LVPECL0
-echo 08 > /dev/radcelf/clkdB/LVPECL1
-echo 01 > /dev/radcelf/clkdA/UPDATE
-echo 01 > /dev/radcelf/clkdB/UPDATE
+set.clkdA	LVPECL1	08
+set.clkdA	LVPECL0 08
+set.clkdB	LVPECL1	08
+set.clkdB	LVPECL0 08
+set.clkdA	UPDATE	1
+set.clkdB	UPDATE	1
 
 # tell FPGA to take over the clocking
 
-echo 1 > /dev/acq400.2.knobs/ddsA_upd_clk_fpga
-echo 1 > /dev/acq400.2.knobs/ddsB_upd_clk_fpga
-echo 1 > /dev/acq400.2.knobs/ddsC_upd_clk_fpga
+set.site 2 ddsA_upd_clk_fpga	1
+set.site 2 ddsB_upd_clk_fpga	1
+set.site 2 ddsC_upd_clk_fpga	1
 
-echo 1 > /dev/radcelf/ddsA/strobe_mode
-echo 1 > /dev/radcelf/ddsB/strobe_mode
-echo 1 > /dev/radcelf/ddsC/strobe_mode
+set.ddsA strobe_mode 1
+set.ddsB strobe_mode 1
+set.ddsC strobe_mode 1
+
 
