@@ -26,6 +26,12 @@ ln -s /sys/bus/spi/devices/spi1.2 /dev/radcelf/ddsC
 ln -s /sys/bus/spi/devices/spi1.3 /dev/radcelf/clkdA
 ln -s /sys/bus/spi/devices/spi1.4 /dev/radcelf/clkdB
 
+ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.ddsA
+ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.ddsB
+ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.ddsC
+ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.clkdA
+ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.clkdB
+
 make_aux_knobs() {
 	let ai=1
 	hwm=/sys/class/hwmon
