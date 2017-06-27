@@ -3,9 +3,9 @@
 # 0.0625, 0.0703, 0.078 (*300M)
 
 # boost multiplier to X15
-set.ddsA       CR      0004f041
-set.ddsB       CR      0004f041
-set.ddsC       CR      0004f041
+set.ddsA       CR      004f0041
+set.ddsB       CR      004f0041
+set.ddsC       CR      004f0041
 
 set.site 4 FTW1=100000000000
 set.site 5 FTW1=120000000000

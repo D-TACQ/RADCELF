@@ -58,9 +58,9 @@ set.clkdB	UPDATE	1
 #Write to the Control Registers on the 3 DDS devices - External I/O Update and SDO On
 # Set the RefClk Multiplier on at x4 switch off the Inverse Sinc Filter
 
-set.ddsA	CR	00040041
-set.ddsB	CR	00040041
-set.ddsC	CR	00040041
+set.ddsA	CR	00400041
+set.ddsB	CR	00400041
+set.ddsC	CR	00400041
 
 
 #Switch the Clocks back on again
