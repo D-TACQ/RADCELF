@@ -53,11 +53,11 @@ echo 0a > /dev/radcelf/clkdB/LVPECL1
 echo 01 > /dev/radcelf/clkdB/UPDATE
 
 #Write to the Control Registers on the 3 DDS devices - External I/O Update and SDO On
-# Set the RefClk Multiplier on at x15, switch off the Inverse Sinc Filter
+# Set the RefClk Multiplier on at x4 switch off the Inverse Sinc Filter
 
-echo 004f0041 > /dev/radcelf/ddsA/CR
-echo 004f0041 > /dev/radcelf/ddsB/CR
-echo 004f0041 > /dev/radcelf/ddsC/CR
+echo 00040041 > /dev/radcelf/ddsA/CR
+echo 00040041 > /dev/radcelf/ddsB/CR
+echo 00040041 > /dev/radcelf/ddsC/CR
 
 
 #Switch the Clocks back on again
