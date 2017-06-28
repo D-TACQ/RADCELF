@@ -21,7 +21,7 @@ def make_header(f):
 	f.write('   <host>%s</host>\n' % host())
         f.write('   <date>%s</date>\n' % date())
         f.write('</acqInfo>\n')
-        cCrR(f, 3, 16)
+        cCrR(f, 3, 18)
 
 def get_data(cols):
         lines = []
