@@ -1,11 +1,10 @@
 #Setup the Clocks
 
 echo DEBUGS OFF
-echo 9 >/proc/sys/kernel/printk
-echo file spi-cadence.c -p >/dev/ddc
+#echo 9 >/proc/sys/kernel/printk
+#echo file spi-cadence.c -p >/dev/ddc
 
 #Reset the entire clock chain
-
 set.clkdA CSPD 		00
 set.clkdA UPDATE 	01
 
@@ -22,15 +21,16 @@ set.clkdB LVDS3		08
 set.clkdB UPDATE	01
 
 
-#Set all the AD9512 dividers to divide by 5 to avoid overheat
-
-set.clkdA	DIV0	1200
-set.clkdA	DIV1	1200
-set.clkdA	DIV2	1200
-set.clkdA	DIV3	1200
-set.clkdA	DIV4	1200
+#Set all the clkdA AD9512 dividers to divide by 4 to avoid overheat
+#100MHz / 4 = 25Mhz source clock
+set.clkdA	DIV0	1100
+set.clkdA	DIV1	1100
+set.clkdA	DIV2	1100
+set.clkdA	DIV3	1100
+set.clkdA	DIV4	1100
 set.clkdA	UPDATE	1
 
+# set clkdB to pass-thru
 set.clkdB	DIV0	0080
 set.clkdB	DIV1	0080
 set.clkdB	DIV2	0080
@@ -55,9 +55,9 @@ set.clkdB	LVPECL0	0a
 set.clkdB	LVPECL1	0a
 set.clkdB	UPDATE	1
 
-#Write to the Control Registers on the 3 DDS devices - External I/O Update and SDO On
+#Write to the Control Registers on the 3 DDS devices - 
+# External I/O Update and SDO On
 # Set the RefClk Multiplier on at x4 switch off the Inverse Sinc Filter
-
 set.ddsA	CR	00400041
 set.ddsB	CR	00400041
 set.ddsC	CR	00400041
