@@ -1,0 +1,16 @@
+#!/bin/sh
+
+clkd=${1:-clkdA}
+
+case $clkd in
+clkdA)
+	site=7;;
+clkdB)
+	site=8;;
+*)
+	echo ERROR bad selector
+esac
+
+echo * | get.site $site
+
+

@@ -93,6 +93,7 @@ EOF
 inetd /etc/inetd.radcelf.conf
 
 monitor_dds &
+monitor_clkd &
 
 if [ -e /mnt/local/RAD-CELF-init ]; then
 	echo run override /mnt/local/RAD-CELF-init
