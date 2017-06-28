@@ -11,6 +11,6 @@ clkdB)
 	echo ERROR bad selector
 esac
 
-echo * | get.site $site
+echo \* | get.site $site
 
 

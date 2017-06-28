@@ -30,7 +30,7 @@ monitor() {
 			[ /usr/local/epics/scripts/wait_ioc_ready ] && break
 		sleep 1
 	done
-	sleep 5
+	sleep 6
 	while [ 1 ]
 	do
 		nice dump_clkd >/dev/null 2>&1
