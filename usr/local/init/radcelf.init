@@ -95,13 +95,13 @@ inetd /etc/inetd.radcelf.conf
 monitor_dds &
 monitor_clkd &
 
-if [ -e /mnt/local/RAD_CELF_init ]; then
-	echo run override /mnt/local/RAD_CELF_init
-	/mnt/local/RAD_CELF_init
-	ln -s /mnt/local/RAD_CELF_init /etc/acq400/2/RAD_CELF_init
+if [ -e /mnt/local/RADCELF_init ]; then
+	echo run override /mnt/local/RADCELF_init
+	/mnt/local/RADCELF_init
+	ln -s /mnt/local/RADCELF_init /etc/acq400/2/RADCELF_init
 else
-	/usr/local/init/RAD_CELF_init
-	ln -s /usr/local/init/RAD_CELF_init /etc/acq400/2/RAD_CELF_init
+	/usr/local/init/RADCELF_init
+	ln -s /usr/local/init/RADCELF_init /etc/acq400/2/RADCELF_init
 fi
 
 echo now hit the FPGA knobs
