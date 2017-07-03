@@ -4,7 +4,12 @@ echo DEBUGS OFF
 #echo 9 >/proc/sys/kernel/printk
 #echo file spi-cadence.c -p >/dev/ddc
 
+
 #Reset the entire clock chain
+#
+set.site 2 clkd_hard_reset=1
+set.site 2 clkd_hard_reset=0
+
 set.clkdA CSPD 		00
 set.clkdA UPDATE 	01
 
@@ -15,7 +20,7 @@ set.clkdA LVDS3 	01
 set.clkdA LVDS4 	08
 set.clkdA UPDATE	01
 
-# Set Secondary Clock LV$PECL 2 Off, set LVDS 3 to TTL
+# Set Secondary Clock LVPECL 2 Off, set LVDS 3 to TTL
 set.clkdB LVPECL2	0a
 set.clkdB LVDS3		08
 set.clkdB UPDATE	01
