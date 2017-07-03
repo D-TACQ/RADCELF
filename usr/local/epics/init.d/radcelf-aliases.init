@@ -1,5 +1,7 @@
 # sh script is sourced
 
+cat - <<EOF
+alias("${HOST}:0:SIG:CLK_S2:FREQ", "${HOST}:2:SIG:DDS:INP:FREQ")
 alias("${HOST}:0:SIG:CLK_S3:FREQ", "${HOST}:2:SIG:DDS:A:FREQ")
 alias("${HOST}:0:SIG:CLK_S4:FREQ", "${HOST}:2:SIG:DDS:B:FREQ")
 alias("${HOST}:0:SIG:CLK_S5:FREQ", "${HOST}:2:SIG:DDS:C:FREQ")
@@ -8,4 +10,4 @@ alias("${HOST}:0:SIG:TRG_S3:FREQ", "${HOST}:2:SIG:DDS:B:CHIRP:FREQ")
 
 alias("${HOST}:0:SIG:TRG_S2:COUNT", "${HOST}:2:SIG:DDS:A:CHIRP:COUNT")
 alias("${HOST}:0:SIG:TRG_S3:COUNT", "${HOST}:2:SIG:DDS:B:CHIRP:COUNT")
-
+EOF
