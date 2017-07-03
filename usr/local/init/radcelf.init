@@ -56,13 +56,14 @@ make_aux_knobs() {
 
 	cat - <<EOF > /etc/acq400/2/clear_counts
 #!/bin/sh
-set.site 0 SIG:TRG_S3:rawc64 0
-set.site 0 SIG:TRG_S2:rawc64 0
-set.site 0 SIG:CLK_S1:rawc64 0
-set.site 0 SIG:CLK_S2:rawc64 0
-set.site 0 SIG:CLK_S3:rawc64 0
-set.site 0 SIG:CLK_S4:rawc64 0
-set.site 0 SIG:CLK_S5:rawc64 0
+HN=\$(hostname)
+caput \${HN}:0:SIG:TRG_S3:rawc64 0
+caput \${HN}:0:SIG:TRG_S2:rawc64 0
+caput \${HN}:0:SIG:CLK_S1:rawc64 0
+caput \${HN}:0:SIG:CLK_S2:rawc64 0
+caput \${HN}:0:SIG:CLK_S3:rawc64 0
+caput \${HN}:0:SIG:CLK_S4:rawc64 0
+caput \${HN}:0:SIG:CLK_S5:rawc64 0
 EOF
 	chmod a+rx /etc/acq400/2/clear_counts
 }
