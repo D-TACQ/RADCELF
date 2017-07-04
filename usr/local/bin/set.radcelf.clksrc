@@ -1,0 +1,13 @@
+#!/bin/sh
+# set.radcelf.clksrc INT\|EXT
+
+case $1 in
+INT)
+	set.clkdA CSPD 5;;
+EXT)
+	set.clkdA CSPD 2;;
+*)
+	echo set.radcelf.clksrc INT\|EXT;;
+esac
+
+
