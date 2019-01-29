@@ -32,11 +32,25 @@ ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.ddsC
 ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.clkdA
 ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.clkdB
 
+get_hwmon() {
+	hwmroot=/sys/class/hwmon
+	hwm="$hwmroot/$(ls -l $hwmroot/ | grep $1 | awk '{ print $9 }')"
+	if [ -e $hwm/in1_input ]; then
+		# k414 style
+		echo $hwm
+	elif [ -e $hwm/device/in1_input ]; then
+		# old style
+		echo $hwm/device
+	else
+		echo >&2 "ERROR $hwm does not have in1_input"
+		exit 1
+	fi
+}
+
 make_aux_knobs() {
 	let ai=1
-	hwm=/sys/class/hwmon
 	# hwmon4 has inputs 1..4
-	for inp in $hwm/hwmon4/device/in?_input $hwm/hwmon3/device/in?_input
+	for inp in $(get_hwmon 4-0029)/in?_input $(get_hwmon 4-0028)/in?_input
 	do
 		ln -s $inp /etc/acq400/$1/ai$ai
 		let ai=$ai+1
