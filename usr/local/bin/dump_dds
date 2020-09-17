@@ -1,112 +1,127 @@
 #!/usr/bin/env python
 
 import time
-import os, sys
+import os
+import sys
 import subprocess
 import decimal
 
+
 def cCrR(f, cols, rows):
-	f.write('<pageFormat><noCols>%d</noCols><colItems>%d</colItems></pageFormat>\n' % (cols, rows))
+    f.write('<pageFormat><noCols>%d</noCols><colItems>%d</colItems></pageFormat>\n' % (cols, rows))
+
 
 def host():
-	return subprocess.check_output(["hostname"]).rstrip()
+    return subprocess.check_output(["hostname"]).rstrip()
+
 
 def date():
-        return subprocess.check_output(["date"]).rstrip()
+    return subprocess.check_output(["date"]).rstrip()
+
 
 def make_header(f):
-	f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-	f.write('<acqDataXML>\n')
-        f.write('<acqInfo>\n')
-	f.write('   <host>%s</host>\n' % host())
-        f.write('   <date>%s</date>\n' % date())
-        f.write('</acqInfo>\n')
-        cCrR(f, 3, 16)
+    f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+    f.write('<acqDataXML>\n')
+    f.write('<acqInfo>\n')
+    f.write('   <host>%s</host>\n' % host())
+    f.write('   <date>%s</date>\n' % date())
+    f.write('</acqInfo>\n')
+    cCrR(f, 3, 16)
+
 
 def get_data(cols):
-        lines = []
-        for file in cols:
-            f = open(file, 'r')
-            raw = f.read();
-            f.close()
-            lines.append(raw.strip().split('\n'))
+    lines = []
+    for file in cols:
+        f = open(file, 'r')
+        raw = f.read()
+        f.close()
+        lines.append(raw.strip().split('\n'))
 
-        pasted = []
-        jj = 0
-        for line in lines[0]:
-            paste_line = ' '.join(line.strip().split(' ')).split(' ')
-       
-            for ii in range(1, len(lines)):
-                paste_line.append(lines[ii][jj])
+    pasted = []
+    jj = 0
+    for line in lines[0]:
+        paste_line = ' '.join(line.strip().split(' ')).split(' ')
 
-            pasted.append(paste_line)
-            jj += 1
-       
-        return pasted
-          
+        for ii in range(1, len(lines)):
+            paste_line.append(lines[ii][jj])
+
+        pasted.append(paste_line)
+        jj += 1
+
+    return pasted
+
+
 def getmult(value):
     cr = int(value, 16)
     return (cr >> 16) & 0x1f
- 
+
+
 def supp(key, value):
-        if 'FTW' in key:
-            return "%f %s" % (float(int(value, 16))/2**48, value)
+    if 'FTW' in key:
+        return "%f %s" % (float(int(value, 16))/2**48, value)
 #            return "%15d %s" % (int(value, 16), value
-        if key == 'CR':
-            return "X%-2d %12s" % (getmult(value), value)
-        else:
-            return value 
+    if key == 'CR':
+        return "X%-2d %12s" % (getmult(value), value)
+    else:
+        return value
+
 
 freq_context = decimal.Context(prec=4)
 
+
 def freq(site):
-        try:
-            hz = subprocess.check_output(["get.site", "0",  "SIG:CLK_S%d:FREQ" % site]).strip().split(' ')[1]
-            return freq_context.create_decimal(hz).to_eng_string()
-        except IndexError:
-            return 'err'
+    try:
+        hz = subprocess.check_output(
+            ["get.site", "0",  "SIG:CLK_S%d:FREQ" % site]).strip().split(' ')[1]
+        return freq_context.create_decimal(hz).to_eng_string()
+    except IndexError:
+        return 'err'
+
 
 def make_body(f):
-        dds_data = get_data(['/proc/driver/ad9854/ddsA/biencuite', 
-                          '/proc/driver/ad9854/ddsB/rare', 
-                          '/proc/driver/ad9854/ddsC/rare'])
-        for line in dds_data:
-            if line[0] == 'CR':
-                break
-        cx = [getmult(x) for x in line[2:5]]
+    dds_data = get_data(['/proc/driver/ad9854/ddsA/biencuite',
+                         '/proc/driver/ad9854/ddsB/rare',
+                         '/proc/driver/ad9854/ddsC/rare'])
+    for line in dds_data:
+        if line[0] == 'CR':
+            break
+    cx = [getmult(x) for x in line[2:5]]
 
-        fin = freq(2)
-        fint = [freq_context.create_decimal(cx[x]*float(fin)).to_eng_string() for x in range(0,3)]
-            
+    fin = freq(2)
+    fint = [freq_context.create_decimal(
+        cx[x]*float(fin)).to_eng_string() for x in range(0, 3)]
+
 #        cr = [getmult(line[2]), getmult(line[3]), getmult(line[4])]
-        
-        lines = [['DDS', '*', '--- DDS A ---', '--- DDS B ---', '--- DDS C ---' ]]
-        lines.extend([['FIN', '+', fin, '--', '--']])
-        lines.extend([['INTCLK', '*', fint[0], fint[1], fint[2]]])
-        lines.extend([['FREQ', '/', freq(3), freq(4), freq(5)]])
-	lines.extend(dds_data)
 
-        id=1
-        for line in lines:
-            f.write('<acqData id="%d" n="%s %s">\n' % (id, line[1], line[0]))
-            f.write('   <v><![CDATA[%30s %30s %30s]]></v>\n' % (supp(line[0], line[2]), supp(line[0], line[3]), supp(line[0],line[4])))
-            f.write('</acqData>\n')
-            id += 1
+    lines = [['DDS', '*', '--- DDS A ---', '--- DDS B ---', '--- DDS C ---']]
+    lines.extend([['FIN', '+', fin, '--', '--']])
+    lines.extend([['INTCLK', '*', fint[0], fint[1], fint[2]]])
+    lines.extend([['FREQ', '/', freq(3), freq(4), freq(5)]])
+    lines.extend(dds_data)
+
+    id = 1
+    for line in lines:
+        f.write('<acqData id="%d" n="%s %s">\n' % (id, line[1], line[0]))
+        f.write('   <v><![CDATA[%30s %30s %30s]]></v>\n' % (supp(line[0],
+                                                                 line[2]), supp(line[0], line[3]), supp(line[0], line[4])))
+        f.write('</acqData>\n')
+        id += 1
+
 
 def make_tail(f):
-	f.write('</acqDataXML>\n')
+    f.write('</acqDataXML>\n')
 
 
 def update_xml():
-	f = open('/dev/shm/DDS.xmlt', 'w')
-	make_header(f)
-	make_body(f)
-	make_tail(f)
-	f.close()
-	os.rename('/dev/shm/DDS.xmlt', '/dev/shm/DDS.xml')
+    f = open('/dev/shm/DDS.xmlt', 'w')
+    make_header(f)
+    make_body(f)
+    make_tail(f)
+    f.close()
+    os.rename('/dev/shm/DDS.xmlt', '/dev/shm/DDS.xml')
 
 
 while True:
-	update_xml()
-	time.sleep(1)
+    update_xml()
+    time.sleep(1)
 done

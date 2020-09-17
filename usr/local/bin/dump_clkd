@@ -1,74 +1,81 @@
 #!/usr/bin/env python
 
 import time
-import os, sys
+import os
+import sys
 import subprocess
 import decimal
 
+
 def cCrR(f, cols, rows):
-	f.write('<pageFormat><noCols>%d</noCols><colItems>%d</colItems></pageFormat>\n' % (cols, rows))
+    f.write('<pageFormat><noCols>%d</noCols><colItems>%d</colItems></pageFormat>\n' % (cols, rows))
+
 
 def host():
-	return subprocess.check_output(["hostname"]).rstrip()
+    return subprocess.check_output(["hostname"]).rstrip()
+
 
 def date():
-        return subprocess.check_output(["date"]).rstrip()
+    return subprocess.check_output(["date"]).rstrip()
+
 
 def make_header(f):
-	f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-	f.write('<acqDataXML>\n')
-        f.write('<acqInfo>\n')
-	f.write('   <host>%s</host>\n' % host())
-        f.write('   <date>%s</date>\n' % date())
-        f.write('</acqInfo>\n')
-        cCrR(f, 3, 18)
+    f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+    f.write('<acqDataXML>\n')
+    f.write('<acqInfo>\n')
+    f.write('   <host>%s</host>\n' % host())
+    f.write('   <date>%s</date>\n' % date())
+    f.write('</acqInfo>\n')
+    cCrR(f, 3, 18)
+
 
 def get_data(cols):
-        lines = []
-        for file in cols:
-            dr = subprocess.check_output(['dump_clkd_regs', file])
-            lines.append(dr.strip().split('\n'))
+    lines = []
+    for file in cols:
+        dr = subprocess.check_output(['dump_clkd_regs', file])
+        lines.append(dr.strip().split('\n'))
 
-        pasted = []
-        jj = 0
-        for line in lines[0]:
-            paste_line = ' '.join(line.strip().split(' ')).split(' ')
-       
-            for ii in range(1, len(lines)):
-                paste_line.append(lines[ii][jj].split(' ')[1])
+    pasted = []
+    jj = 0
+    for line in lines[0]:
+        paste_line = ' '.join(line.strip().split(' ')).split(' ')
 
-            pasted.append(paste_line)
-            jj += 1
-       
-        return pasted
-          
+        for ii in range(1, len(lines)):
+            paste_line.append(lines[ii][jj].split(' ')[1])
+
+        pasted.append(paste_line)
+        jj += 1
+
+    return pasted
+
 
 def make_body(f):
-        clkd_data = get_data(['clkdA', 'clkdB'])
-        lines = [['reg', 'clkdA', 'clkdB' ]]
-        lines.extend(clkd_data)
-        id = 0
+    clkd_data = get_data(['clkdA', 'clkdB'])
+    lines = [['reg', 'clkdA', 'clkdB']]
+    lines.extend(clkd_data)
+    id = 0
 
-        for line in lines:
-            f.write('<acqData id="%d" n="%s">\n' % (id, line[0]))
-            f.write('   <v><![CDATA[%30s %30s]]></v>\n' % (line[1], line[2]))
-            f.write('</acqData>\n')
-            id += 1
+    for line in lines:
+        f.write('<acqData id="%d" n="%s">\n' % (id, line[0]))
+        f.write('   <v><![CDATA[%30s %30s]]></v>\n' % (line[1], line[2]))
+        f.write('</acqData>\n')
+        id += 1
+
 
 def make_tail(f):
-	f.write('</acqDataXML>\n')
+    f.write('</acqDataXML>\n')
 
 
 def update_xml():
-	f = open('/dev/shm/CLKD.xmlt', 'w')
-	make_header(f)
-	make_body(f)
-	make_tail(f)
-	f.close()
-	os.rename('/dev/shm/CLKD.xmlt', '/dev/shm/CLKD.xml')
+    f = open('/dev/shm/CLKD.xmlt', 'w')
+    make_header(f)
+    make_body(f)
+    make_tail(f)
+    f.close()
+    os.rename('/dev/shm/CLKD.xmlt', '/dev/shm/CLKD.xml')
 
 
 while True:
-	update_xml()
-	time.sleep(1)
+    update_xml()
+    time.sleep(1)
 done
