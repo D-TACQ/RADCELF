@@ -32,7 +32,7 @@ def make_header(f):
 def get_data(cols):
     lines = []
     for file in cols:
-        dr = subprocess.check_output(['dump_clkd_regs', file])
+        dr = subprocess.check_output(['dump_clkd_regs', file]).decode('utf8')
         lines.append(dr.strip().split('\n'))
 
     pasted = []

@@ -71,8 +71,8 @@ freq_context = decimal.Context(prec=4)
 
 def freq(site):
     try:
-        hz = subprocess.check_output(
-            ["get.site", "0",  "SIG:CLK_S%d:FREQ" % site]).strip().split(' ')[1]
+        query = ["get.site", "0",  "SIG:CLK_S%d:FREQ" % site]
+        hz = subprocess.check_output(query).decode('utf8').strip().split(' ')[1]
         return freq_context.create_decimal(hz).to_eng_string()
     except IndexError:
         return 'err'
