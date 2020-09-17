@@ -82,14 +82,14 @@ def make_body(f):
     lines.extend([['---------------','---------------','---------------','---------------','---------------','---------------','---------------','---------------']])
 
     lines.extend([['SIGNAL', 'TRG.d0', 'TRG.d1', 'TRG.d2', 'TRG.d3', 'TRG.d4', 'TRG.d5', 'TRG.d6']])
-    trg = [ 'TRG_EXT', 'TRG_MB', 'TRG_S1', 'TRG_S2', 'TRG_S3']
+    trg = [ 'TRG_EXT', 'TRG_MB', 'TRG_S1', 'TRG_S2', 'TRG_S3', 'TRG_S4', 'TRG_S5']
     freqs = [ 'FREQ', ]
     freqs.extend([ freq('SIG:{}:FREQ'.format(k)) for k in trg ])
     lines.extend([freqs])
     counts = ['COUNT',]
     counts.extend([ freq('SIG:{}:COUNT'.format(k)) for k in trg ])
     lines.extend([counts])
-    lines.extend( [['FUNCTION',  'EXT', 'MB', 'S1', 'Chirp A', 'Chirp B']])
+    lines.extend( [['FUNCTION',  'EXT', 'MB', 'S1', 'Chirp A', 'Chirp B', 'GPSx', 'GPSy']])
 
 
     id = 1
