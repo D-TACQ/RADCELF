@@ -101,10 +101,10 @@ def make_body(f):
             subsection = 0
         
         f.write('<acqData id="%d" n="%s%s%s %s">\n' % (id, section if subsection != 0 else '', '.' if subsection != 0 else '', subsection if subsection != 0 else '', line[0]))
-        f.write('   <v><![CDATA[')
+        f.write('   <v>')
         for field in line[1:]:
             f.write('%15s ' % (field))
-        f.write('   ]]></v>\n')
+        f.write('</v>\n')
         f.write('</acqData>\n')
         id += 1
         subsection += 1
