@@ -119,6 +119,7 @@ EOF
 
 inetd /etc/inetd.radcelf.conf
 
+monitor_counters &
 monitor_dds &
 monitor_clkd &
 
