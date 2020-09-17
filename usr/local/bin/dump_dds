@@ -12,11 +12,11 @@ def cCrR(f, cols, rows):
 
 
 def host():
-    return subprocess.check_output(["hostname"]).rstrip()
+    return subprocess.check_output(["hostname"]).decode('utf8').rstrip()
 
 
 def date():
-    return subprocess.check_output(["date"]).rstrip()
+    return subprocess.check_output(["date"]).decode('utf8').rstrip()
 
 
 def make_header(f):
