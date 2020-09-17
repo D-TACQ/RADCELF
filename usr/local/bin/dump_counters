@@ -79,6 +79,8 @@ def make_body(f):
     lines.extend([counts])
     lines.extend( [['FUNCTION',  'EXT', 'MB', 'ADC ISR', 'DDSCLK', 'ddsA', 'ddsB', 'ddsC']])
 
+    lines.extend([['---------------','---------------','---------------','---------------','---------------','---------------','---------------','---------------']])
+
     lines.extend([['SIGNAL', 'TRG.d0', 'TRG.d1', 'TRG.d2', 'TRG.d3', 'TRG.d4', 'TRG.d5', 'TRG.d6']])
     trg = [ 'TRG_EXT', 'TRG_MB', 'TRG_S1', 'TRG_S2', 'TRG_S3']
     freqs = [ 'FREQ', ]
@@ -91,14 +93,21 @@ def make_body(f):
 
 
     id = 1
+    section=1
+    subsection=1
     for line in lines:
-        f.write('<acqData id="%d" n="">\n' % (id))
+        if line[0].startswith('---'):
+            section += 1
+            subsection = 0
+        
+        f.write('<acqData id="%d" n="%s%s%s %s">\n' % (id, section if subsection != 0 else '', '.' if subsection != 0 else '', subsection if subsection != 0 else '', line[0]))
         f.write('   <v><![CDATA[')
-        for field in line:
+        for field in line[1:]:
             f.write('%15s ' % (field))
         f.write('   ]]></v>\n')
         f.write('</acqData>\n')
         id += 1
+        subsection += 1
 
 
 def make_tail(f):
