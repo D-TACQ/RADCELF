@@ -14,6 +14,8 @@ EOF
 
 dblr \"db/radcelf_aliases.db\",\"\"
 
+dblr \"db/counter.db\",\"UUT=${HOST},SITE=2,CTRMAX=2147483648,DT=1,DTC=1,lname=PPS_LATCH,pname=scount_clk_pps_latch\"
+
 
 
 
