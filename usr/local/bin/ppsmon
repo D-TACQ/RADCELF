@@ -1,0 +1,69 @@
+#!/usr/bin/env python
+import sys
+import epics
+import time
+import subprocess
+
+counts = []
+
+def onCount(pvname=None, value=None, char_value=None, **kw):
+#   print("onCount {} {}".format(pvname, value))
+   counts.append(float(int(value)))
+   if len(counts) > 101:
+      counts.pop(0)
+
+def meanfreq(counts, nm):
+   nc = len(counts)
+   if nc > nm:
+       latest = counts[nc-nm-1:]
+       return (latest[nm] - latest[0])/nm
+   else:
+       return -1
+
+hn=sys.argv[1]
+
+pv="{}:2:SIG:PPS_LATCH:COUNT".format(hn)
+
+
+c64 = epics.PV(pv)
+c64.add_callback(onCount)
+
+report_lines = []
+nreport = 10
+
+elapsed = 0
+while True:
+    nc = len(counts)
+    if nc > 0:
+        if counts[nc-1] == 0:
+            print("RESET")
+            elapsed = 0
+            for ii in range(nc):
+                counts.pop(0)
+            for ii in range(len(report_lines)):
+                report_lines.pop(0)
+            continue
+
+        report = "s={:05d} c={:12.0f} m1={:.0f} m10={:.1f} m30={:.2f} m100={:.2f}".format(
+            elapsed, 
+            counts[nc-1],
+            meanfreq(counts, 1), 
+            meanfreq(counts,10), 
+            meanfreq(counts,30),
+            meanfreq(counts,100))
+        print(report)
+        report_lines.append(report)
+        if len(report_lines) > nreport:
+            report_lines.pop(0)
+        with open('/dev/shm/meanfreq.txt', 'w') as topfile:
+            for rline in report_lines:
+                topfile.write("{}\n".format(rline))
+        subprocess.call('fs2xml -k "" -o /dev/shm/PPSCLK-new.xml -s /dev/shm/c2rR20 </dev/shm/meanfreq.txt;\
+                         mv /dev/shm/PPSCLK-new.xml /dev/shm/PPSCLK.xml', shell=True)
+      
+    time.sleep(1)
+    elapsed += 1
+
+
+
+
