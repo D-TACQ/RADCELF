@@ -4,7 +4,7 @@ ADDED_WEB=0
 
 add_web() {
 if [ -e /var/www/d-tacq/acq_main_page.html ]; then
-        grep -q DDS /var/www/d-tacq/acq_main_page.html
+        grep -q PPSCLK /var/www/d-tacq/acq_main_page.html
         if [ $? -ne 0 ]; then
                 sed -ie '/TABAPPEND/ {
 a       <li><a title="PPSCLK" href="acq_info_page.html">PPSCLK</a></li>
@@ -25,7 +25,7 @@ monitor() {
         done
 	while [ 1 ]
 	do
-		echo monitor_dds waiting for ioc
+		echo monitor_ppsclk waiting for ioc
 		[ -e /usr/local/epics/scripts/wait_ioc_ready ] && 
 			[ /usr/local/epics/scripts/wait_ioc_ready ] && break
 		sleep 1

@@ -44,7 +44,7 @@ while True:
                 report_lines.pop(0)
             continue
 
-        report = "s={:05d} c={:12.0f} m1={:.0f} m10={:.1f} m30={:.2f} m100={:.2f}".format(
+        report = "s={:05d} c={:<12.0f} m1={:.0f} m10={:.1f} m30={:.2f} m100={:.2f}".format(
             elapsed, 
             counts[nc-1],
             meanfreq(counts, 1), 

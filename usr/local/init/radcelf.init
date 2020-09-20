@@ -122,6 +122,7 @@ inetd /etc/inetd.radcelf.conf
 monitor_counters &
 monitor_dds &
 monitor_clkd &
+monitor_ppsclk &
 
 if [ -e /mnt/local/RADCELF_init ]; then
 	echo run override /mnt/local/RADCELF_init
