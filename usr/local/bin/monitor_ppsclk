@@ -33,6 +33,7 @@ monitor() {
 	sleep 5
 	while [ 1 ]
 	do
+		export EPICS_CA_AUTO_ADDR_LIST=NO EPICS_CA_ADDR_LIST=127.0.0.1
 		nice ppsmon $(hostname) >/dev/null 2>&1
 	done
 }
