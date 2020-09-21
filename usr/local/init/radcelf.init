@@ -80,6 +80,14 @@ caput \${HN}:0:SIG:CLK_S4:rawc64 0
 caput \${HN}:0:SIG:CLK_S5:rawc64 0
 EOF
 	chmod a+rx /etc/acq400/2/clear_counts
+
+	ls /mnt/packages/* | grep -q gpsntp
+	if [ $? -eq 0 ]; then
+		echo gpsntp found hooking gps reset
+		echo out > /dev/gpio/CELF/.direction.d0
+		echo 0 > /dev/gpio/CELF/d0
+		ln -s /usr/local/bin/gps_reset /etc/acq400/2
+	fi
 }
 make_site_server() {
 	mkdir /etc/acq400/$1

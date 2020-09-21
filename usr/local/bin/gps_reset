@@ -1,0 +1,13 @@
+#!/bin/sh
+# reset GPS and PPS_LATCH count. args 1: reset, 0: enable. "+" => "1 0"
+
+RST=${*:-1 0}
+
+if [ "$RST" = "+" ]; then
+    RST="1 0"
+fi
+
+for rst in $RST; do
+	echo $rst >/dev/gpio/CELF/d0
+	set.site 2 SIG:PPS_LATCH:RESET $rst
+done
