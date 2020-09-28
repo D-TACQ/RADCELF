@@ -32,6 +32,10 @@ ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.ddsC
 ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.clkdA
 ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.clkdB
 
+ln -s /usr/local/HAPI/test_apps/radcelf-chirp-init.py /usr/local/bin
+ln -s /usr/local/HAPI/test_apps/radcelf-freq-test.py  /usr/local/bin
+ln -s /usr/local/HAPI/test_apps/radcelf-tune-pps.py   /usr/local/bin
+
 get_hwmon() {
 	hwmroot=/sys/class/hwmon
 	hwm="$hwmroot/$(ls -l $hwmroot/ | grep $1 | awk '{ print $9 }')"
