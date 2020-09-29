@@ -113,6 +113,11 @@ make_site_server_dds() {
 	ln -s /dev/acq400.2.knobs/${2}_OSK /etc/acq400/$1/P30
 	ln -s /dev/radcelf/$2/strobe /etc/acq400/$1/strobe
 	ln -s /dev/radcelf/$2/strobe_mode /etc/acq400/$1/strobe_mode
+
+	ln -s /dev/acq400.2.knobs/${2}_gps_sync_chirp /etc/acq400/$1/gps_sync_chirp
+	ln -s /dev/acq400.2.knobs/${2}_gps_engage_hold /etc/acq400/$1/gps_engage_hold
+	ln -s /dev/acq400.2.knobs/${2}_gps_arm_pps /etc/acq400/$1/gps_arm_pps
+	
 	ln -s /proc/driver/ad9854/$2/* /etc/acq400/$1/
 }
 
