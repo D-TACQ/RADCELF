@@ -35,6 +35,7 @@ ln -s /usr/local/bin/set.radcelf /usr/local/bin/set.clkdB
 ln -s /usr/local/HAPI/test_apps/radcelf-chirp-init.py /usr/local/bin
 ln -s /usr/local/HAPI/test_apps/radcelf-freq-test.py  /usr/local/bin
 ln -s /usr/local/HAPI/test_apps/radcelf-tune-pps.py   /usr/local/bin
+ln -s /usr/local/HAPI/test_apps/radcelf-tune-fine-pps.py   /usr/local/bin
 
 get_hwmon() {
 	hwmroot=/sys/class/hwmon
