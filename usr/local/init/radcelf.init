@@ -142,26 +142,20 @@ monitor_dds &
 monitor_clkd &
 monitor_ppsclk &
 
-if [ -e /mnt/local/RADCELF_init ]; then
-	echo run override /mnt/local/RADCELF_init
-	/mnt/local/RADCELF_init
-	ln -s /mnt/local/RADCELF_init /etc/acq400/2/RADCELF_init
+FS=${RADCELF_FS:-12208}
+/usr/local/bin/radcelf-set-sample-clock $FS &
+
+
+RINIT=/mnt/local/RADCELF_init
+if [ -e $RINIT ]; then
+	echo run override $RINIT
 else
-	/usr/local/init/RADCELF_init
-	ln -s /usr/local/init/RADCELF_init /etc/acq400/2/RADCELF_init
+	RINIT=/usr/local/init/RADCELF_init
 fi
 
-[ -e /mnt/local/sysconfig/acq400.sh ] && source /mnt/local/sysconfig/acq400.sh
-FS=${RADCELF_FS:-12208}
-(
-/usr/local/epics/scripts/wait_ioc_ready
-sleep 3
-/usr/local/bin/radcelf-set-sample-clock $FS
-sleep 3
-/usr/local/bin/radcelf-set-sample-clock $FS
-) &
+ln -s $RINIT /etc/acq400/2/RADCELF_init
+$RINIT
 
-echo now hit the FPGA knobs
 
 
 
