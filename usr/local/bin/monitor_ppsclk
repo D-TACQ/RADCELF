@@ -39,6 +39,6 @@ monitor() {
 }
 
 
-monitor
+$1
 
 

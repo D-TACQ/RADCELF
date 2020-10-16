@@ -137,10 +137,14 @@ EOF
 
 inetd /etc/inetd.radcelf.conf
 
-monitor_counters &
-monitor_dds &
-monitor_clkd &
-monitor_ppsclk &
+MONITORS="monitor_counters monitor_dds monitor_clkd monitor_ppsclk"
+for m in $MONITORS; do
+	$m add_web
+done
+for m in $MONITORS; do
+	$m monitor &
+done
+
 
 FS=${RADCELF_FS:-12208}
 /usr/local/bin/radcelf-set-sample-clock $FS &
