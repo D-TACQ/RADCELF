@@ -64,14 +64,16 @@ make_aux_knobs() {
 	ln -s $hwm/hwmon4/device/temp1_input /etc/acq400/$1/temp2
 	rm /etc/acq400/$1/in?
 
-	for dir in /dev/gpio/CELF/.direction.d?
-	do
-		echo in > $dir
-	done
-	for al in /dev/gpio/CELF/.active_lo.d?
-	do
-		echo 0 > $al
-	done
+	if [ "$(cat /etc/acq400/2/MTYPE)" = "69" ]; then
+		for dir in /dev/gpio/CELF/.direction.d?
+		do
+			echo in > $dir
+		done
+		for al in /dev/gpio/CELF/.active_lo.d?
+		do
+			echo 0 > $al
+		done
+	fi
 
 	cat - <<EOF > /etc/acq400/2/clear_counts
 #!/bin/sh
