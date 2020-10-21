@@ -52,7 +52,12 @@ get_hwmon() {
 	fi
 }
 
-make_aux_knobs() {
+make_radcelf_original_knobs() {
+	mount -t configfs none /sys/kernel/config
+	mkdir -p /sys/kernel/config/device-tree/overlays/radcelf
+	cat /mnt/dtb.d/acq1002r_radcelf_overlay.dtb > \
+	        /sys/kernel/config/device-tree/overlays/radcelf/dtbo
+
 	let ai=1
 	# hwmon4 has inputs 1..4
 	for inp in $(get_hwmon 4-0029)/in?_input $(get_hwmon 4-0028)/in?_input
@@ -64,16 +69,18 @@ make_aux_knobs() {
 	ln -s $hwm/hwmon4/device/temp1_input /etc/acq400/$1/temp2
 	rm /etc/acq400/$1/in?
 
-	if [ "$(cat /etc/acq400/2/MTYPE)" = "69" ]; then
-		for dir in /dev/gpio/CELF/.direction.d?
-		do
-			echo in > $dir
-		done
-		for al in /dev/gpio/CELF/.active_lo.d?
-		do
-			echo 0 > $al
-		done
-	fi
+	for dir in /dev/gpio/CELF/.direction.d?
+	do
+		echo in > $dir
+	done
+	for al in /dev/gpio/CELF/.active_lo.d?
+	do
+		echo 0 > $al
+	done
+}
+
+make_aux_knobs() {
+	[ "$(cat /etc/acq400/2/MTYPE)" = "69" ] && make_radcelf_original_knobs $1
 
 	cat - <<EOF > /etc/acq400/2/clear_counts
 #!/bin/sh
