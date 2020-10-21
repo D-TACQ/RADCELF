@@ -1,0 +1,8 @@
+#!/bin/sh
+# default: embed ktime_t {secs:20; msecs:12} in SPAD3
+EN=${1:-1}
+SITE=${2:-1}
+REG=${3:-0xfeed}
+USECS=${4:-1000}
+
+echo ${EN},${SITE},${REG},${USECS} > /dev/acq400.0.knobs/spadcop3

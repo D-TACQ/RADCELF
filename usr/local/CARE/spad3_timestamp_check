@@ -1,0 +1,8 @@
+#!/bin/sh
+# compares SPAD3 timestamp with time_t
+# the top 5 nibbles of SPAD3 should match the low 5 nibbled of time_t
+# the low 3 nibbles of SPAD3 is msec
+
+echo $(date) $(printf "%x" $(date +%s)) $(cat /dev/acq400.0.knobs/spad3)
+
+

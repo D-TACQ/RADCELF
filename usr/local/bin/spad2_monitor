@@ -1,0 +1,8 @@
+#!/bin/sh
+# default : embed EVT_SC_LATCH in spad2
+EN=${1:-1}
+SITE=${2:-1}
+REG=${3:-0x30}
+USECS=${4:-1000}
+
+echo ${EN},${SITE},${REG},${USECS} > /dev/acq400.0.knobs/spadcop2
