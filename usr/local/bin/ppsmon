@@ -59,7 +59,8 @@ while True:
         with open('/dev/shm/meanfreq.txt', 'w') as topfile:
             try:
                 with open('/dev/shm/radcelf-tune-pps.txt', 'r') as banner:
-                    topfile.write("{}\n".format(banner.readlines()))
+                    for line in banner.readlines():
+                        topfile.write("{}\n".format(line))
             except:
                 topfile.write("radcelf-tune-pps has not run\n")
 
