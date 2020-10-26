@@ -55,7 +55,14 @@ while True:
         report_lines.append(report)
         if len(report_lines) > nreport:
             report_lines.pop(0)
+
         with open('/dev/shm/meanfreq.txt', 'w') as topfile:
+            try:
+                with open('/dev/shm/radcelf-tune-pps.txt', 'r') as banner:
+                    topfile.write("{}\n".format(banner.readlines()))
+            except:
+                topfile.write("radcelf-tune-pps has not run\n")
+
             for rline in report_lines:
                 topfile.write("{}\n".format(rline))
         subprocess.call('fs2xml -k "" -o /dev/shm/PPSCLK-new.xml -s /dev/shm/c2rR20 </dev/shm/meanfreq.txt;\
