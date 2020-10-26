@@ -53,11 +53,6 @@ get_hwmon() {
 }
 
 make_radcelf_original_knobs() {
-	mount -t configfs none /sys/kernel/config
-	mkdir -p /sys/kernel/config/device-tree/overlays/radcelf
-	cat /mnt/dtb.d/acq1002r_radcelf_overlay.dtb > \
-	        /sys/kernel/config/device-tree/overlays/radcelf/dtbo
-
 	let ai=1
 	# hwmon4 has inputs 1..4
 	for inp in $(get_hwmon 4-0029)/in?_input $(get_hwmon 4-0028)/in?_input
