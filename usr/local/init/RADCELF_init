@@ -4,13 +4,34 @@ echo DEBUGS OFF
 #echo 9 >/proc/sys/kernel/printk
 #echo file spi-cadence.c -p >/dev/ddc
 
+MT=$(get.site 2 MTYPE)
+
+MT_RAD=69
+MT_WERA=70
+
+case $MT in
+$MT_RAD)
+	CSPDX=00
+	CLKDA_DIVX=1100
+	DDSn_CRX=00440041
+	echo DDS Module type $MT RADCELF init CR X4;;
+$MT_WERA)
+	CSPDX=01
+	CLKDA_DIVX=0080
+	DDSn_CRX=00520041
+	echo DDS Module type $MT WERA init CR X4 180MHz;;
+*)
+	error "Unknown DDS Module type, abort"
+	exit 1
+esac
+	 
 
 #Reset the entire clock chain
 #
 set.site 2 clkd_hard_reset=1
 set.site 2 clkd_hard_reset=0
 
-set.clkdA CSPD 		00
+set.clkdA CSPD 		$CSPDX
 set.clkdA UPDATE 	01
 
 
@@ -28,11 +49,11 @@ set.clkdB UPDATE	01
 
 #Set all the clkdA AD9512 dividers to divide by 4 to avoid overheat
 #100MHz / 4 = 25Mhz source clock
-set.clkdA	DIV0	1100
-set.clkdA	DIV1	1100
-set.clkdA	DIV2	1100
-set.clkdA	DIV3	1100
-set.clkdA	DIV4	1100
+set.clkdA	DIV0	$CLKDA_DIVX
+set.clkdA	DIV1	$CLKDA_DIVX
+set.clkdA	DIV2	$CLKDA_DIVX
+set.clkdA	DIV3	$CLKDA_DIVX
+set.clkdA	DIV4	$CLKDA_DIVX
 set.clkdA	UPDATE	1
 
 # set clkdB to pass-thru
@@ -63,9 +84,9 @@ set.clkdB	UPDATE	1
 #Write to the Control Registers on the 3 DDS devices - 
 # External I/O Update and SDO On
 # Set the RefClk Multiplier on at x4 switch off the Inverse Sinc Filter
-set.ddsA	CR	00440041
-set.ddsB	CR	00440041
-set.ddsC	CR	00440041
+set.ddsA	CR	$DDSn_CRX
+set.ddsB	CR	$DDSn_CRX
+set.ddsC	CR	$DDSn_CRX
 
 
 #Switch the Clocks back on again
