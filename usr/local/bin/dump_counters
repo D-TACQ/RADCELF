@@ -125,5 +125,4 @@ def update_xml():
 
 while True:
     update_xml()
-    time.sleep(1)
 done
