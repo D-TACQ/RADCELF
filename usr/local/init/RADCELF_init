@@ -14,12 +14,12 @@ $MT_RAD)
 	CSPDX=00
 	CLKDA_DIVX=1100
 	DDSn_CRX=00440041
-	echo DDS Module type $MT init CR X4 100MHz;;
+	echo DDS Module type $MT RAD init CR X4 100MHz;;
 $MT_WER)
 	CSPDX=01
 	CLKDA_DIVX=0080
 	DDSn_CRX=00520041
-	echo DDS Module type $MT init CR X18 180MHz;;
+	echo DDS Module type $MT WER init CR X18 180MHz;;
 *)
 	error "Unknown DDS Module type, abort"
 	exit 1
